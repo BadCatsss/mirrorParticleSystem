@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSystem", "ParticleSystem.csproj", "{093ED85E-F6F3-6A4B-B204-DB9F07C5BE6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSystem.Editor", "ParticleSystem.Editor.csproj", "{B572A0FC-E121-E3D3-6BA5-71BA8C50E395}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{093ED85E-F6F3-6A4B-B204-DB9F07C5BE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093ED85E-F6F3-6A4B-B204-DB9F07C5BE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093ED85E-F6F3-6A4B-B204-DB9F07C5BE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093ED85E-F6F3-6A4B-B204-DB9F07C5BE6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B572A0FC-E121-E3D3-6BA5-71BA8C50E395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B572A0FC-E121-E3D3-6BA5-71BA8C50E395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B572A0FC-E121-E3D3-6BA5-71BA8C50E395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B572A0FC-E121-E3D3-6BA5-71BA8C50E395}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
