@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MirrorS : MonoBehaviour
 {
-    public Camera MCamera;
-    RenderTexture textureForMirror;
+    public Camera MCamera;// текущая камера(камера зеркала)
+    RenderTexture textureForMirror;//текстура для отображения 
     float[] tempArray; //для хранения возвращаемых значения 
    static float PersonHeight;// высота персонажа
     float heigth_Texture;// искомая высота
-  public static  Vector3 LookFor_Camera_T;// длина направления взглада (направление взгляда из камеры на основане)
+  public static  Vector3 LookFor_Camera_T;// длина направления взглада (направление взгляда из камеры на основане)(точка взгляда и длина до нее)
     Vector3 Gipotinuza_Of_Heighth_T1;
   public static  float DeltaX; //изминение передвижения персонажа
    public static float sinCamera;//синус взгляда камеры
@@ -22,11 +22,11 @@ public class MirrorS : MonoBehaviour
     //float DeltaP;
     //float DeltaX1;
      static float Sin_For_Plane_Delata;
-   static float d1;
+   static float d1;// переменная для запоминаний предыдущих значений  Sin_For_Plane;
     // Use this for initialization
     void Start()
     {
-        textureForMirror = new RenderTexture(256, 256, 16, RenderTextureFormat.ARGB32);
+        textureForMirror = new RenderTexture(256, 256, 16, RenderTextureFormat.ARGB32);// задаем текстуру
 
 
     }
@@ -43,13 +43,15 @@ public class MirrorS : MonoBehaviour
 
     private void Update()
     {
-        LookFor_Camera_T = new Vector3(Move.LOOK, 0, 0);// длина направления взглада (направление взгляда из камеры на основане)
-        tempArray = RecalculateRenderTexture(Move.herTransorm.position);
-        textureForMirror = new RenderTexture(System.Convert.ToInt32(tempArray[0]),
-           System.Convert.ToInt32(tempArray[1]), 16, RenderTextureFormat.ARGB32);
+        LookFor_Camera_T = new Vector3(Move.LOOK, 0, 0);// длина направления взглада (направление взгляда из камеры на основане)(точка взгляда и длина до нее)
+        tempArray = RecalculateRenderTexture(Move.herTransorm.position);//обновление изображения в зеркале
+        textureForMirror = 
+            new RenderTexture(
+            System.Convert.ToInt32(tempArray[0]),
+           System.Convert.ToInt32(tempArray[1]), 16, RenderTextureFormat.ARGB32);// обновляем текстуру зеркала
 
-        textureForMirror.Create();
-       
+        textureForMirror.Create();// обновляем текстуру зеркала
+
         MCamera.targetTexture = textureForMirror;
 
 
@@ -81,49 +83,50 @@ public class MirrorS : MonoBehaviour
         }
         finally
         {
-            sinCamera = DeltaX / PersonHeight;//синус взгляда камеры
-            cosCamera = PersonHeight / DeltaX;//косинус взглада камеры
-            Sin_For_Plane = Mathf.Sin(cosCamera);//искомый синус при основании
-            Cos_For_Plane = Mathf.Cos(sinCamera);// тскомый косинус  при основании
+            sinCamera = DeltaX / PersonHeight;//синус взгляда камеры (из прямоугольного треугольника)
+            cosCamera = PersonHeight / DeltaX;//косинус взглада камеры(из прямоугольного треугольника)
+            Sin_For_Plane = Mathf.Sin(cosCamera);//искомый синус при основании (зеркала)(из прямоугольного треугольника для зеркала - по накрест лежащим углам)
+            Cos_For_Plane = Mathf.Cos(sinCamera);// искомый косинус  при основании(зеркала)(из прямоугольного треугольника для зеркала - по накрест лежащим углам)
             IsCos = true;
         }
         
 
-        Gipotinuza_Of_Heighth_T1.x = (LookFor_Camera_T.x * Sin_For_Plane) / cosCamera;
+        Gipotinuza_Of_Heighth_T1.x = (LookFor_Camera_T.x * Sin_For_Plane) / cosCamera;//гипотинуза взгляда
         //DeltaP = DeltaX - (DeltaX - LookFor_Camera_T.x);
 
         //DeltaX1 = Sin_For_Plane_Delata / DeltaP;
-        heigth_Texture = Mathf.Pow(PersonHeight, 2) + (DeltaX - LookFor_Camera_T.x) - (Sin_For_Plane_Delata / DeltaX);
+        heigth_Texture = Mathf.Pow(PersonHeight, 2) + (DeltaX - LookFor_Camera_T.x) - (Sin_For_Plane_Delata / DeltaX);//высота искомой текстуры для зеркала
 
 
-        float whidth_Texture = heigth_Texture;
+        float whidth_Texture = heigth_Texture;// квадарат
 
 
         //particleSystemEmiter.P.position
         float[] return_Array = new float[3];
 
-        return_Array[0] = heigth_Texture;
+        return_Array[0] = heigth_Texture;//высота искомой текстуры для зеркала
         return_Array[1] = 256;
       
         return return_Array;
 
     }
 
-   public static bool PersonMoves()
+   public static bool PersonMoves()// см ParticleSystemEmiter
     {
-        if (Move.KeyMove())
+        if (Move.KeyMove())//если сработал скрипт Move - персонаж двигался
         {
-            DeltaX = Move.herTransorm.position.x * Time.deltaTime - Move.herTransorm.position.x;
+            DeltaX = Move.herTransorm.position.x * Time.deltaTime - Move.herTransorm.position.x; //расчет изминения передвижения персонажа
 
             for (int i = 0; i < 1; i++)
             {
                 //PersonCoordsAfter = Move.herTransorm.position.x * Time.deltaTime;
                 //найдем гипотинузу если персонаж двигается
                 //Gipotinuza_Of_Person = Mathf.Sqrt(Mathf.Pow(PersonHeight, 2) + Mathf.Pow((DeltaX - LookFor_Camera_T.x), 2));
-                d1 = Sin_For_Plane;
-               
+
+                d1 = Sin_For_Plane;// после каждого перемещения меняем d1 -   запоминанинаем предыдущих значений  Sin_For_Plane;
+
             }
-            PersonCoordsBefore = Move.herTransorm.position.x;
+            PersonCoordsBefore = Move.herTransorm.position.x;//нужно если персонаж не двигался
             return true;
         }
         else
@@ -131,18 +134,18 @@ public class MirrorS : MonoBehaviour
             return false;
         }
 
-        if (!Move.KeyMove())
+        if (!Move.KeyMove())// если персонаж не двигался
         {
             for (int i = 0; i < 1; i++)
             {
 
-                //найдем гипотинузу если НЕ персонаж двигается
+                //найдем гипотинузу если  персонаж НЕ двигается
                 //Gipotinuza_Of_Person = Mathf.Sqrt(Mathf.Pow(PersonHeight, 2) + Mathf.Pow(DeltaX, 2));
 
-                Sin_For_Plane_Delata = Sin_For_Plane - d1;
+                Sin_For_Plane_Delata = Sin_For_Plane - d1; // Sin_For_Plane_Delata = искомый синус при основании - предыдущее значение  Sin_For_Plane;
             }
-            PersonCoordsBefore = Move.herTransorm.position.x;
-            DeltaX = particleSystemEmiter.Position_Of_Ins.x - PersonCoordsBefore;
+            PersonCoordsBefore = Move.herTransorm.position.x;//нужно если персонаж не двигался
+            DeltaX = particleSystemEmiter.Position_Of_Ins.x - PersonCoordsBefore;// тогда персонаж только повернулся и место создания Particle - осталось неизменным
             return false;
         }
         else
